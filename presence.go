@@ -2,6 +2,7 @@ package psn
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 )
 
@@ -24,7 +25,23 @@ type GameTitleInfo struct {
 	Name           string `json:"titleName"`
 	Platform       string `json:"format"`
 	LaunchPlatform string `json:"launchPlatform"`
-	TitleImage     string `json:"npTitleIconUrl"`
+	TitleImage     string `json:"-"`
+	ConceptURL     string `json:"conceptIconUrl,omitempty"`
+	NPTitleURL     string `json:"npTitleIconUrl,omitempty"`
+}
+
+func (g *GameTitleInfo) UnmarshalJSON(data []byte) error {
+	type G GameTitleInfo
+	if err := json.Unmarshal(data, (*G)(g)); err != nil {
+		return err
+	}
+	if g.ConceptURL != "" {
+		g.TitleImage = g.ConceptURL
+	}
+	if g.NPTitleURL != "" {
+		g.TitleImage = g.NPTitleURL
+	}
+	return nil
 }
 
 type PresenceResponse struct {
