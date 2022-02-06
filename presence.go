@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-const presenceApi = "https://m.np.playstation.net/api/userProfile/v1/internal/users/me/basicPresences"
+const presenceApi = "https://m.np.playstation.net/api/userProfile/v1/internal/users/me/basicPresences?type=primary"
 
 type Presence struct {
 	Availability        string              `json:"availability"`
